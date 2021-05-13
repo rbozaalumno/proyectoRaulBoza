@@ -38,7 +38,7 @@
                         <option value="?category_id={{$category->id}}">{{$category->name}}</option>
                     @endforeach
                 </select>
-                <form class="form-inline my-2 my-lg-0" style="min-width:300px;" method="POST" action="../panel">@csrf
+                <form class="form-inline my-2 my-lg-0" style="min-width:300px;" method="POST" action="../panelf">@csrf
                     <input name="search" id="search" class="form-control mr-sm-2 navbar-focus" type="search" placeholder="" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0 navbar-button" type="submit">Buscar</button>
                 </form>

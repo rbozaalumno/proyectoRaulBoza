@@ -15,15 +15,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('index');
 });
+Route::get('home','App\Http\Controllers\RecipeController@getHome');
+Route::post('home','App\Http\Controllers\RecipeController@getHome');
 Route::get('index','App\Http\Controllers\RecipeController@getIndex');
 Route::post('index','App\Http\Controllers\RecipeController@getIndex');
 Route::get('panel','App\Http\Controllers\RecipeController@getPanel')->middleware('auth');
 Route::post('panel','App\Http\Controllers\RecipeController@getPanel')->middleware('auth');
+Route::get('panelf','App\Http\Controllers\RecipeController@getPanelF')->middleware('auth');
+Route::post('panelf','App\Http\Controllers\RecipeController@getPanelF')->middleware('auth');
 Route::get('creation','App\Http\Controllers\RecipeController@getcreateRecipe')->middleware('auth');
 Route::post('create','App\Http\Controllers\RecipeController@createRecipe')->middleware('auth');
 Route::post('myrecipe/{id}','App\Http\Controllers\RecipeController@getupdateRecipe')->middleware('auth');
 Route::post('update/{id}','App\Http\Controllers\RecipeController@updateRecipe')->middleware('auth');
 Route::post('delete/{id}','App\Http\Controllers\RecipeController@deleteRecipe')->middleware('auth');
+Route::post('deleteComment/{comment_id}/{recipe_id}','App\Http\Controllers\RecipeController@deleteComment')->middleware('auth');
 Route::post('favourite/{id}','App\Http\Controllers\RecipeController@setRecipeFavourite')->middleware('auth');
 Route::post('unfavourite/{id}','App\Http\Controllers\RecipeController@unsetRecipeFavourite')->middleware('auth');
 Route::get('recipe/{id}','App\Http\Controllers\RecipeController@getRecipe');
@@ -33,4 +38,4 @@ Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout', functio
 });
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

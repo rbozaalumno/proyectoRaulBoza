@@ -12,17 +12,41 @@ use App\Recipe;
 class RecipeController extends Controller
 {
     //
+    public function getHome(Request $request){
+        
+        if(request()->has('category_id')){
+            $recipes = Recipe::where('category_id',request('category_id'))->orderBy('id','desc')->paginate(6)->appends('category_id', request('category_id'));
+        }elseif(request()->has('search')){
+            $recipes = Recipe::where('title', 'like', '%'.request('search').'%')->orderBy('id','desc')->paginate(6)->appends('title', request('search'));
+        }else{
+            $recipes = Recipe::orderBy('id','desc')->paginate(6);
+        }
+        foreach($recipes as $recipe){
+            $categories[] = DB::table('category')->where('id',$recipe->category_id)->get();
+        }
+        return view('home',['recipes'=> $recipes, 'categories'=>$categories]);
+    }
+
     public function getIndex(Request $request){
         
-        if(request()->has('category')){
-            $recipes = Recipe::where('category',request('category'))->orderBy('id','desc')->paginate(9)->appends('category', request('category'));
+        if(request()->has('category_id')){
+            $recipes = Recipe::where('category_id',request('category_id'))->orderBy('id','desc')->paginate(9)->appends('category_id', request('category_id'));
         }elseif(request()->has('search')){
             $recipes = Recipe::where('title', 'like', '%'.request('search').'%')->orderBy('id','desc')->paginate(9)->appends('title', request('search'));
         }else{
             $recipes = Recipe::orderBy('id','desc')->paginate(9);
         }
+        foreach($recipes as $recipe){
+            $categories[] = DB::table('category')->where('id',$recipe->category_id)->get();
+        }
         
-        return view('index',['recipes'=> $recipes]);
+        $categoriesSelect = DB::table('category');
+
+        if(empty($categories)){
+            return view('index',['recipes'=> $recipes,'categoriesSelect'=>$categoriesSelect->get()]);
+        }
+
+        return view('index',['recipes'=> $recipes, 'categories'=>$categories, 'categoriesSelect'=>$categoriesSelect->get()]);
     }
 
     public function getRecipe($id){
@@ -36,8 +60,8 @@ class RecipeController extends Controller
         }else{
             $isFavourite=false;
         }
-        
-        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite]);
+        $category = DB::table('category')->where('id',$recipe->category_id)->get();
+        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0]]);
     }
 
     public function getPanel(Request $request){
@@ -45,15 +69,45 @@ class RecipeController extends Controller
         $userId = Auth::id();
         $user = DB::table('users')->where('id',$userId)->get();
 
-        if(request()->has('category')){
-            $myRecipes = DB::table('recipe')->where('user_id',$userId)->where('category',request('category'))->orderBy('id','desc')->paginate(11)->appends('category', request('category'));
+        if(request()->has('category_id')){
+            $myRecipes = DB::table('recipe')->where('user_id',$userId)->where('category_id',request('category_id'))->orderBy('id','desc')->paginate(11)->appends('category_id', request('category_id'));
         }elseif(request()->has('search')){
             $myRecipes = DB::table('recipe')->where('title', 'like', '%'.request('search').'%')->orderBy('id','desc')->paginate(12)->appends('title', request('search'));
         }else{
             $myRecipes = DB::table('recipe')->where('user_id',$userId)->orderBy('id','desc')->paginate(11);
         }
+        $categoriesSelect = DB::table('category');
+        return view('userPanel/panel', ['user' => $user, 'myRecipes'=>$myRecipes, 'categoriesSelect'=>$categoriesSelect->get()]);
+    }
 
-        return view('userPanel/panel', ['user' => $user, 'myRecipes'=>$myRecipes]);
+    public function getPanelF(Request $request){
+
+        $userId = Auth::id();
+        $user = DB::table('users')->where('id',$userId)->get();
+        $favourites[] = DB::table('favourite')->where('user_id',$userId)->get();
+
+        if(request()->has('category_id')){
+            $myRecipes = DB::table('recipe')->join('favourite',function($join){
+                $userId = Auth::id();
+                $join->on('recipe.id','=','favourite.recipe_id')->where('favourite.user_id',$userId);
+            })->where('category_id',request('category_id'))->orderBy('recipe.id','desc')->paginate(11)->appends('category_id', request('category_id'));
+        }elseif(request()->has('search')){
+            $myRecipes = DB::table('recipe')->join('favourite',function($join){
+                $userId = Auth::id();
+                $join->on('recipe.id','=','favourite.recipe_id')->where('favourite.user_id',$userId);
+            })
+            ->where('title', 'like', '%'.request('search').'%')->orderBy('recipe.id','desc')->paginate(12)->appends('title', request('search'));;
+        }else{
+            $myRecipes = DB::table('recipe')->join('favourite',function($join){
+                $userId = Auth::id();
+                $join->on('recipe.id','=','favourite.recipe_id')->where('favourite.user_id',$userId);
+            })
+            ->orderBy('recipe.id','desc')->paginate(4);
+        }
+
+        $categoriesSelect = DB::table('category');
+        //var_dump($myRecipes);
+        return view('userPanel/favourites', ['user' => $user, 'myRecipes'=>$myRecipes, 'categoriesSelect'=>$categoriesSelect->get()]);
     }
 
     public function getUserRecipe($id){
@@ -97,7 +151,7 @@ class RecipeController extends Controller
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'ingredients' => $request->input('ingredients'),
-                'category' => $request->input('category'),
+                'category_id' => $request->input('category'),
                 'image' => 'data:image/jpeg;base64,'.base64_encode(file_get_contents($request->file('image')->path())),
                 ]);
 
@@ -109,6 +163,7 @@ class RecipeController extends Controller
     }    
 
     public function deleteRecipe(Request $request,$recipe_id){ 
+        DB::table('favourite')->where('recipe_id', $recipe_id)->delete();
         DB::table('comment')->where('recipe_id', $recipe_id)->delete();
         $recipe = DB::table('recipe')->where('id', $recipe_id)->delete();
         
@@ -118,7 +173,6 @@ class RecipeController extends Controller
 
         return redirect('panel');
     }  
-
     public function insertComment(Request $request,$recipe_id){ 
         $userId = Auth::id();
         DB::table('comment')->insert([
@@ -130,8 +184,32 @@ class RecipeController extends Controller
         $recipe = Recipe::find($recipe_id);
         $comments = DB::table('comment')->where('recipe_id',$recipe_id)->orderBy('id','desc')->paginate(20);
 
-        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments]);
+        $favourites = DB::table('favourite')->where('recipe_id',$recipe_id)->where('user_id',$userId)->get();
+        $isFavourite;
+        if(count($favourites)!=0){
+            $isFavourite=true;
+        }else{
+            $isFavourite=false;
+        }
+        
+        return redirect('recipe/'.$recipe_id);
     }
+
+    public function deleteComment(Request $request,$comment_id, $recipe_id){
+        DB::table('comment')->where('id', $comment_id)->delete();
+        $userId = Auth::id();
+        $recipe = Recipe::find($recipe_id);
+        $comments = DB::table('comment')->where('recipe_id',$recipe_id)->orderBy('id','desc')->paginate(20);
+
+        $favourites = DB::table('favourite')->where('recipe_id',$recipe_id)->where('user_id',$userId)->get();
+        $isFavourite;
+        if(count($favourites)!=0){
+            $isFavourite=true;
+        }else{
+            $isFavourite=false;
+        }
+        return redirect('recipe/'.$recipe_id);
+    }  
 
     public function getCategories(){ 
         $categories = DB::table('category');
@@ -139,7 +217,6 @@ class RecipeController extends Controller
         return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments]);
     }
 
-    
     public function setRecipeFavourite($recipe_id){ 
        
        $userId = Auth::id();
@@ -157,8 +234,10 @@ class RecipeController extends Controller
         }else{
             $isFavourite=false;
         }
-        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite]);
+        $category = DB::table('category')->where('id',$recipe->category_id)->get();
+        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0]]);
     }
+
     public function unsetRecipeFavourite($recipe_id){ 
     
         $userId = Auth::id();
@@ -173,6 +252,7 @@ class RecipeController extends Controller
         }else{
             $isFavourite=false;
         }
-        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite]);
+        $category = DB::table('category')->where('id',$recipe->category_id)->get();
+        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0]]);
     }
 }
