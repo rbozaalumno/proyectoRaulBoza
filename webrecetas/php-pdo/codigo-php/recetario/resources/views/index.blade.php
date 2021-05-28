@@ -32,14 +32,14 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto"style="margin-right: 88px;">
-                <select class="form-control navbar-focus" id="category" name="category"style="min-width:200px;margin-right: 60px;border: 2px solid #63A6A6;" onchange="location = this.value;">
-                    <option value="">Seleciona categoria</option>
+                <select class="form-control navbar-focus category-select" id="category" name="category"style="min-width:200px;margin-right: 60px;border: 2px solid #63A6A6;" onchange="location = this.value;">
+                    <option class="category-selected" value="">Seleciona categoria</option>
                     @foreach($categoriesSelect as $category)
-                        <option value="?category_id={{$category->id}}">{{$category->name}}</option>
+                        <option class="category-selected" value="?category_id={{$category->id}}">{{$category->name}}</option>
                     @endforeach
                 </select>
                 <form class="form-inline my-2 my-lg-0" style="min-width:300px;" method="POST" action="../index">@csrf
-                    <input name="search" id="search" class="form-control mr-sm-2 navbar-focus" type="search" placeholder="" aria-label="Search">
+                    <input name="search" id="search" class="form-control mr-sm-2 navbar-focus input" type="search" placeholder="" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0 navbar-button" type="submit">Buscar</button>
                 </form>
                 <li class="nav-item dropdown" >
@@ -67,7 +67,26 @@
     </nav>
     <div class="content">
         <div class="row nomarpad">
-        <div style="display:none">{{$i = 0}}</div>
+            <div class="row nomarpad" style="justify-content: space-evenly">
+            @foreach($recipes as $recipe)
+                <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 nomarpad mb-3 mr-1" style="border:5px solid #63A6A6;border-radius:5px;min-height: 200px;background-color:#AEE5D8">
+                    <div class="row nomarpad">
+                        <a href="{{url('recipe/'.$recipe->id)}}" style="text-decoration:none;color:#000000">
+                            <div class="row nomarpad">                        
+                                <div class="col-12 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto; max-height:300px;border-bottom:5px solid #63A6A6"></div>
+                                <div class="col-10 nomarpad" style="padding:10px!important">
+                                    <p style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
+                                        max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;; font-family:Lato">{{$recipe->title}}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div> 
+            @endforeach
+            </div>
+            <div class="col-12">{{$recipes->links("pagination::bootstrap-4")}}</div>  
+        </div>
+        <!--<div style="display:none">{{$i = 0}}</div>
             @foreach($recipes as $recipe)
                 <div class="col-12 col-sm-12 col-md-6 col-lg-4  col-xl-4 nomarpad mb-3">
                     <a href="{{url('recipe/'.$recipe->id)}}" style="text-decoration:none;color:#404b56">
@@ -83,14 +102,14 @@
                 <div style="display:none">{{$i++}}</div>
             @endforeach
             <div class="col-12">{{$recipes->links("pagination::bootstrap-4")}}</div>
-        </div>  
+        </div>-->
     </div>
     
 
 </body>
 <footer>
     <div class="col-12 nomarpad" style="height:150px; background-color:#63A6A6;padding-top: 0px!important;">
-        <h1 style="position:absolute;right: 31%;top: 40%;font-family:Lato;color:#BF4D67;font-size:50px;">Copyright© 2021 WebRecetas</h1>
+        <h1 style="position:absolute;right: 31%;top: 40%;font-family:Lato;color:#BF4D67;font-size:40px;">Copyright© 2021 WebRecetas</h1>
         <img class="img-fluid" src="../images/backhome.png" alt="" style="width:100%;height: 165px;object-fit: cover;object-position: 0px -1000px;"></img>
     </div>
 </footer>

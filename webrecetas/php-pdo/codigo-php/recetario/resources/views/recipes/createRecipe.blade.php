@@ -16,7 +16,7 @@
         <h1 style="position:absolute;right: 36%;top: 30%;font-family:Pacifico;color:#BF4D67;font-size:100px;">WebRecetas</h1>
         <img class="img-fluid" src="../images/backhome.png" alt="" style="width:100%;height: 250px;object-fit: cover;object-position: 0px -410px;"></img>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-light" style=" background-color:#AEE5D8;padding: .5rem 6rem .5rem 12rem;">
+    <nav class="navbar navbar-expand-lg navbar-light" style=" background-color:#AEE5D8;padding: .5rem 6rem .5rem 12rem;border: 4px solid #63A6A6">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -31,7 +31,7 @@
                     <a class="nav-link navbar-element" href="/index">Recetas<span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto"style="margin-right: 88px;">
+            <ul class="navbar-nav ml-auto"style="margin-right: 130px;">
                 
                 <li class="nav-item dropdown" >
                     @if (Auth::guest())
@@ -60,63 +60,76 @@
         @if($mode==1)
         <form method="POST" action="../create" enctype="multipart/form-data">
             @csrf
-            <div class="row nomarpad">                        
-                <div class="col-3 nomarpad"><input id="image" type="file" name="image" required></div>
-                <div class="col-6 nomarpad" style="padding-left: 50px!important;">
+            <div class="row nomarpad">
+                <div class="col-10" style="font-family:Pacifico;color:#BF4D67;font-size:75px;">Crear nueva receta</div>
+                <div id="bkimage" class="col-2" style="background: no-repeat;border:5px dotted;text-align:center;background-image: url(../images/add_image.png);background-size: 50%;background-origin: content-box;background-position: center;">
+                    <input id="image" type="file" class="custom-file-input" style="max-height:100px" id="inputGroupFile01" name="image" required>
+                </div>
+                <div class="col-6 nomarpad" style="padding-left: 50px!important;margin-top:50px!important">
                     <div class="row nomarpad">
-                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="title" style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
+                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="title" style="text-decoration:none;text-decoration:underline; font-weight:bold;font-size:25px;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 30px; /* fallback */
                                         max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Titulo de la receta</label>
-                        <input type="text" class="form-control" id="title" name="title" required></input></div>
-                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="ingredients" style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
-                                        max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Ingredientes de la receta</label>
-                        <input type="text" class="form-control" id="ingredients" name="ingredients" required></div>    
-                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="category" style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
+                        <input type="text" class="form-control input" id="title" name="title" style="font-size: 20px!important;" required></input></div>
+                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="category" style="text-decoration:none;text-decoration:underline; font-weight:bold;font-size:25px;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 30px; /* fallback */
                                         max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Categoria</label>
-                                                    <select class="form-control" id="category" name="category" require>
+                                                    <select class="form-control category-select" id="category" name="category" require>
                                                         @foreach ($categories as $category)
-                                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                                        <option class="category-select" style="font-size: 20px!important;" value="{{$category->id}}">{{$category->name}}</option>
                                                         @endforeach
                                                     </select></div>
+                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="ingredients" style="text-decoration:none;text-decoration:underline; font-weight:bold;font-size:25px;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 30px; /* fallback */
+                                        max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Ingredientes de la receta</label>
+                        <input type="text" class="form-control input" style="font-size: 20px!important;" id="ingredients" name="ingredients" required></div>    
+                        
                     </div>
                 </div>
-                <div class="col-12 nomarpad" style="margin: 10px!important;"><label for="category" style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
-                                        max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Descripción</label></div>
-                <div class="col-11 nomarpad" style="margin: 10px!important;"><textarea class="form-control" name="description" id="description" cols="100" rows="5" required></textarea></div>
-                <div class="col-12"><div class="col-12 nomarpad"><button type="submit" class="btn btn-primary">Enviar</button></div>
+                <div class="col-6" style="margin-top:50px!important">
+                    <div class="col-12 nomarpad" style="margin: 10px!important;"><label for="category" style="text-decoration:none;text-decoration:underline; font-weight:bold;font-size:25px;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 30px; /* fallback */
+                                            max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Descripción</label></div>
+                    <div class="col-11 nomarpad" style="max-width: none"><textarea class="form-control description" name="description" id="description" cols="100" rows="5" style="height:300px"></textarea></div>
+                </div>
+                <div class="col-12"><div class="col-12 nomarpad"><button type="submit" class="btn navbar-button" style="float: right;margin-top:20px!important; font-size: 30px;border:3px solid #BF4D67!important">Crear</button></div>
             </div>
         </form>
         </div>
         @else
         <form method="POST" action="../update/{{$recipe->id}}" enctype="multipart/form-data">
             @csrf
-            <div class="row nomarpad">                        
-                <div class="col-3 nomarpad" style="align-self:center"><input id="image" type="file" name="image" required></div>
-                <div class="col-6 nomarpad" style="padding-left: 50px!important;">
+            <div class="row nomarpad">
+                <div class="col-10" style="font-family:Pacifico;color:#BF4D67;font-size:75px;">Modificar receta</div>
+                <div id="bkimage" class="col-2" style="background: no-repeat;border:5px dotted;text-align:center;background-image: url(../images/add_image.png);background-size: 50%;background-origin: content-box;background-position: center;">
+                    <input id="image" type="file" class="custom-file-input" style="max-height:100px" id="inputGroupFile01" name="image" required>
+                </div>
+                <script>document.getElementById("bkimage").style.backgroundImage =  'url("{{$recipe->image}}")';</script>
+                <div class="col-6 nomarpad" style="padding-left: 50px!important;margin-top:50px!important">
                     <div class="row nomarpad">
-                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="title" style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
+                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="title" style="text-decoration:none;text-decoration:underline; font-weight:bold;font-size:25px;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 30px; /* fallback */
                                         max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Titulo de la receta</label>
-                        <input type="text" class="form-control" id="title" placeholder="{{$recipe->title}}" value="{{$recipe->title}}" name="title" required></input></div>
-                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="ingredients" style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
-                                        max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Ingredientes de la receta</label>
-                        <input type="text" class="form-control" id="ingredients" placeholder="{{$recipe->ingredients}}" value="{{$recipe->ingredients}}" name="ingredients" required></div>    
-                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="category" style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
+                        <input type="text" class="form-control input" style="font-size: 20px!important;" id="title" name="title" value="{{$recipe->title}}" required></input></div>
+                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="category" style="text-decoration:none;text-decoration:underline; font-weight:bold;font-size:25px;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 30px; /* fallback */
                                         max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Categoria</label>
-                                                    <select class="form-control" id="category" name="category" require>
+                                                    <select class="form-control category-select" style="font-size: 20px!important;" id="category" name="category" require>
                                                         @foreach ($categories as $category)
-                                                            @if($category->id==$category_id)
-                                                            <option selected value="{{$category->id}}">{{$category->name}}</option>
+                                                        @if($category->id==$category_id)
+                                                            <option class="category-select" selected value="{{$category->id}}">{{$category->name}}</option>
                                                             @else
-                                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                                            <option class="category-select" value="{{$category->id}}">{{$category->name}}</option>
                                                             @endif
                                                         @endforeach
                                                     </select></div>
+                        <div class="col-10 nomarpad" style="margin: 10px!important;"><label for="ingredients" style="text-decoration:none;text-decoration:underline; font-weight:bold;font-size:25px;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 30px; /* fallback */
+                                        max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Ingredientes de la receta</label>
+                        <input type="text" class="form-control input" style="font-size: 20px!important;" id="ingredients" name="ingredients" value="{{$recipe->ingredients}}" required></div>    
+                        
                     </div>
                 </div>
-                <div class="col-12 nomarpad" style="margin: 10px!important;"><label for="category" style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
-                                        max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Descripción</label></div>
-                <div class="col-11 nomarpad" style="margin: 10px!important;"><textarea class="form-control" name="description" id="description" cols="100" rows="5" required>{{$recipe->description}}</textarea></div>
-                <div class="col-6 nomarpad" style="padding: 10px!important;"><button type="submit" class="btn btn-primary">Actualizar</button></div></form>
-                <div class="col-6 nomarpad" style="padding: 10px!important;"><form method="POST" action="../delete/{{$recipe->id}}" enctype="multipart/form-data">@csrf<button type="submit" class="btn btn-danger">Borrar</button></form></div>
+                <div class="col-6" style="margin-top:50px!important">
+                    <div class="col-12 nomarpad" style="margin: 10px!important;"><label for="category" style="text-decoration:none;text-decoration:underline; font-weight:bold;font-size:25px;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 30px; /* fallback */
+                                            max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;">Descripción</label></div>
+                    <div class="col-11 nomarpad" style="max-width: none"><textarea class="form-control" name="description" id="description" cols="100" rows="5" style="height:300px">{{$recipe->description}}</textarea></div>
+                </div>
+                <div class="col-12"><div class="col-12 nomarpad"><button type="submit" class="btn navbar-button" style="float: right;margin-top:20px!important; font-size: 30px;border:3px solid #BF4D67!important">Modificar</button></div>    
+                </div>
             </div>
         </form>
         @endif
@@ -126,7 +139,7 @@
 
 <footer>
     <div class="col-12 nomarpad" style="height:150px; background-color:#63A6A6;padding-top: 0px!important;">
-        <h1 style="position:absolute;right: 31%;top: 40%;font-family:Lato;color:#BF4D67;font-size:50px;">Copyright© 2021 WebRecetas</h1>
+        <h1 style="position:absolute;right: 31%;top: 40%;font-family:Lato;color:#BF4D67;font-size:40px;">Copyright© 2021 WebRecetas</h1>
         <img class="img-fluid" src="../images/backhome.png" alt="" style="width:100%;height: 165px;object-fit: cover;object-position: 0px -1000px;"></img>
     </div>
 </footer>
@@ -136,4 +149,16 @@
 <!-- jQuery and JS bundle w/ Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+<script src="{{asset('js/show_image.js')}}"></script>
+<script src="https://cdn.tiny.cloud/1/61v0r5ham9p1g0k2bqwr60bilpmotncy1mufxgayoeuvu9mr/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      plugins: 'image paste',
+   });
+  </script>
 </html>

@@ -58,9 +58,72 @@
     </nav>
     <div class="content" style="font-family: Lato;">
         <div class="row nomarpad">                        
-            <div class="col-3 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto;border-radius:5px; 
-                            -webkit-box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.3);-moz-box-shadow:4px 4px 5px 0px rgba(50, 50, 50, 0.3);
-                            box-shadow:4px 4px 5px 0px rgba(50, 50, 50, 0.3);"></div>
+            <div class="col-3 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto;border:5px solid #63A6A6; border-radius:5px;"></div>
+            <div class="col-9">
+                <div class="row nomarpad">
+                    <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:75px;margin-bottom:25px;text-decoration:underline">{{$recipe->title}}</div>
+                    @if($isFavourite)
+                    <div class="col-1"><form method="POST" action="../unfavourite/{{$recipe->id}}" enctype="multipart/form-data">@csrf<input src="../images/full_star.svg" type="image" name="submit" class="star" style="width:100%" alt="Submit"/></form></div>
+                    @else
+                    <div class="col-1"><form method="POST" action="../favourite/{{$recipe->id}}" enctype="multipart/form-data">@csrf<input src="../images/empty_star.svg" type="image" name="submit" class="star" style="width:100%" alt="Submit"/></form></div>
+                    @endif
+                    <div class="col-1"><a href="https://api.whatsapp.com/send?text={{Request::url()}}"><img src="../images/waicon.png" class="waicon" style="width:100%"/></a></div>
+                    @if(Auth::id()==1)
+                    <div class="col-12"><form method="POST" action="../delete/{{$recipe->id}}" enctype="multipart/form-data">@csrf<button type="submit" class="btn btn-danger" style="margin: 10px;">Eliminar Post</button></form></div>
+                    @endif
+                </div>
+            </div>
+            <div class="col-6" style="background: #AEE5D8;border-radius:5px;border-color: #63A6A6;border-style: solid;margin-top:10px">
+                    <div class="col-12 nomarpad recipe_subtitle"><p>Ingredientes</p></div>
+                    <div class="col-12 nomarpad recipe_ingredients"><p>{{$recipe->ingredients}}</p></div>
+            </div>
+            <div class="col-12" style="background: #AEE5D8;  margin-top:25px!important;border-radius:5px;border-color: #63A6A6;border-style: solid;">
+                <div class="col-12 nomarpad recipe_subtitle"><p>Descripcion</p></div>
+                <div class="col-12 nomarpad" style="margin-top:40px!important;margin-bottom:50px!important">{!!$recipe->description!!}</div>
+            </div>
+            <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:50px;margin-bottom:25px;;margin-top:25px;">Comentarios - {{count($comments)}}</div>
+            @if(!Auth::guest())
+            <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:30px;margin-bottom:10px;;margin-top:25px;text-decoration:underline">Deja tu comentario</div>
+            <div class="col-12">
+                <div class="row nomarpad">
+                    <form method="POST" action="../comment/{{$recipe->id}}">
+                    @csrf
+                        <textarea class="form-control" name="comment" id="comment" cols="100" rows="5" style="margin:10px; width:auto!important" required></textarea>
+                        
+                        <button type="submit" class="btn navbar-button" style="float:right;margin: 10px;">Enviar</button>
+                    </form>
+                </div>
+            </div>
+            @else
+            <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:30px;margin-bottom:10px;;margin-top:25px"><a href="/login" class="newa" style="color:#BF4D67">¡Únete para dejar tus comentarios!</a></div>
+            @endif
+            <div class="col-12 nomarpad">
+                <div class="row nomarpad">
+                    @php 
+                        $i=0;
+                    @endphp
+                    @foreach($comments as $comment)
+                    <div class="col-6 nomarpad">
+                        <div class="row nomarpad">
+                            <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:25px;margin-bottom:10px;;margin-top:25px">{{$names[$i]}}</div>
+                        @if(Auth::id()==1)
+                            <div class="col-9"><p style="margin: 10px;padding: 10px;background: #e4d4d4;border-radius: 10px;">{{$comment->text}}</p></div>
+                            <div class="col-3"><form method="POST" action="../deleteComment/{{$comment->id}}/{{$recipe->id}}" enctype="multipart/form-data">@csrf<button type="submit" class="btn btn-danger" style="float:right;margin: 10px;">Eliminar Comentario</button></form></div>
+                        @else
+                            <div class="col-12 nomarpad"><p style="margin: 10px;padding: 10px;background: #e4d4d4;border-radius: 10px;">{{$comment->text}}</p></div>
+                        @endif
+                        </div>
+                    </div>    
+                    @php 
+                        $i++;
+                    @endphp 
+                    @endforeach
+                    <div class="col-12">{{$comments->links("pagination::bootstrap-4")}}</div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="row nomarpad">                        
+            <div class="col-3 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto;border:5px solid #63A6A6; border-radius:5px;"></div>
             <div class="col-9 nomarpad" style="padding:10px!important;">
                 <div class="row nomarpad">
                     <div class="col-8 nomarpad recipe_title"><p>{{$recipe->title}}</p> 
@@ -80,14 +143,14 @@
                     @endif
                     @endif
                     <div class="col-1"><a href="https://api.whatsapp.com/send?text={{Request::url()}}"><img src="../images/waicon.png" class="waicon" style="width:100%"/></a></div>
-                    <div class="col-12" style="background: #AEE5D8;border-radius:5px; ">
+                    <div class="col-12" style="background: #AEE5D8;border-radius:5px;border-color: #63A6A6;border-style: solid;">
                     <div class="col-12 nomarpad recipe_subtitle"><p>Ingredientes</p></div>
                     <div class="col-12 nomarpad recipe_ingredients"><p>{{$recipe->ingredients}}</p></div></div>
                 </div>
             </div>
-            <div class="col-12" style="background: #AEE5D8;  margin-top:25px!important;border-radius:5px; ">
+            <div class="col-12" style="background: #AEE5D8;  margin-top:25px!important;border-radius:5px;border-color: #63A6A6;border-style: solid;">
             <div class="col-12 nomarpad recipe_subtitle"><p>Descripcion</p></div>
-            <div class="col-12"><div class="col-12 nomarpad" style="margin-top:40px!important"><p>{{$recipe->description}}</p></div></div></div>
+            <div class="col-12"><div class="col-12 nomarpad" style="margin-top:40px!important">{!!$recipe->description!!}</div></div></div>
         </div>
         @if(!Auth::guest())
             <div class="row nomarpad">
@@ -109,14 +172,14 @@
                 @endif
             @endforeach
             <div class="col-12">{{$comments->links("pagination::bootstrap-4")}}</div>
-        </div>
+        </div>-->
     </div>
     
 
 </body>
 <footer>
     <div class="col-12 nomarpad" style="height:150px; background-color:#63A6A6;padding-top: 0px!important;">
-        <h1 style="position:absolute;right: 31%;top: 40%;font-family:Lato;color:#BF4D67;font-size:50px;">Copyright© 2021 WebRecetas</h1>
+        <h1 style="position:absolute;right: 31%;top: 40%;font-family:Lato;color:#BF4D67;font-size:40px;">Copyright© 2021 WebRecetas</h1>
         <img class="img-fluid" src="../images/backhome.png" alt="" style="width:100%;height: 165px;object-fit: cover;object-position: 0px -1000px;"></img>
     </div>
 </footer>
@@ -126,4 +189,10 @@
 <!-- jQuery and JS bundle w/ Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+<script src="https://cdn.tiny.cloud/1/61v0r5ham9p1g0k2bqwr60bilpmotncy1mufxgayoeuvu9mr/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+      selector: '#description',
+   });
+  </script>
 </html>

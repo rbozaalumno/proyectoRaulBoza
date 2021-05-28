@@ -61,7 +61,15 @@ class RecipeController extends Controller
             $isFavourite=false;
         }
         $category = DB::table('category')->where('id',$recipe->category_id)->get();
-        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0]]);
+        $usersId=[];
+        foreach($comments as $comment){
+            array_push($usersId,$comment->{"user_id"});
+        }
+        $usersNames=[];
+        for ($i = 0; $i <= count($usersId)-1; $i++) {
+            array_push($usersNames,(DB::table('users')->where('id',$usersId[$i])->get())[0]->{'name'});
+        }
+        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0],'names'=>$usersNames]);
     }
 
     public function getPanel(Request $request){
@@ -173,6 +181,7 @@ class RecipeController extends Controller
 
         return redirect('panel');
     }  
+
     public function insertComment(Request $request,$recipe_id){ 
         $userId = Auth::id();
         DB::table('comment')->insert([
