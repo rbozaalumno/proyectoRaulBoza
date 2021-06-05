@@ -21,7 +21,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav" style="margin-left:50px">
                 <li class="nav-item active">
                     <a class="nav-link navbar-element" href="/home">Indice<span class="sr-only">(current)</span></a>
                 </li>
@@ -31,7 +31,7 @@
                     <a class="nav-link navbar-element" href="/index">Recetas<span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto"style="margin-right: 88px;">
+            <ul class="navbar-nav ml-auto"style="margin-right: 235px;">
                 <select class="form-control navbar-focus category-select" id="category" name="category"style="min-width:200px;margin-right: 60px;border: 2px solid #63A6A6;" onchange="location = this.value;">
                     <option value="">Seleciona categoria</option>
                     @foreach($categoriesSelect as $category)
@@ -66,23 +66,49 @@
         </div>
     </nav>
     <div class="content">
-        <div class="row">
-            <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:75px;margin-bottom:25px">Panel de Usuario</div>
-            <div class="col-12"><label style="font-weight:bold;text-decoration:underline">Nombre</label></div>
-            <div class="col-12"><p>{{$user[0]->name}}</p></div>
-            <div class="col-12"><label style="font-weight:bold;text-decoration:underline">Email</label></div>
-            <div class="col-12" style="margin-bottom:25px"><p>{{$user[0]->email}}</p></div>
-            <div class="col-1"><img src="../images/favourite_icon.png" style="max-width: -webkit-fill-available;"alt=""></div>
-            <div class="col-11" style="font-family:Pacifico;color:#BF4D67;font-size:50px;margin-bottom:25px;text-decoration:underline">Mis favoritos</div>
+    <div class="row">
+            <div class="col-12">
+                <div class="row nomarpad">
+                    <div class="col-12 nomarpad" style="font-family:Pacifico;color:#BF4D67;font-size:75px;margin-bottom:25px">Panel de Usuario</div>
+                </div>
+                <form method="POST" action="../update_user/{{$user[0]->id}}" enctype="multipart/form-data">@csrf
+                <div class="row nomarpad ml-4 mt-5">
+                    <div id="bkimage" class="col-2 " style="background: no-repeat;border:5px dotted;text-align:center;background-image: url(../images/add_image.png);background-size: 100%;background-origin: content-box;background-position: center;">
+                        <input id="image" type="file" class="custom-file-input" style="max-height:100px" id="inputGroupFile01" name="image">
+                    </div>
+                    <script>
+                        if('{{$user[0]->image}}' != 'null'){
+                            document.getElementById("bkimage").style.backgroundImage =  'url("{{$user[0]->image}}")';
+                        };
+                    </script>
+                    <div class="col-5">
+                        <div class="row nomarpad">
+                            <div class="col-12"><label style="font-weight:bold;text-decoration:underline;font-size:17px">Nombre</label></div>
+                            <div class="col-12"><p style="font-size:17px">{{$user[0]->name}}</p></div>
+                            <div class="col-12"><label style="font-weight:bold;text-decoration:underline;font-size:17px">Email</label></div>
+                            <div class="col-12" style="font-size:17px"><p>{{$user[0]->email}}</p></div>
+                        </div>
+                    </div>
+                    <div class="col-12 nomarpad">
+                        <div class="col-5 nomarpad"><button type="submit" class="btn navbar-button" style="float: left;margin-top:20px!important; font-size: 15px;border:3px solid #BF4D67!important">Cambiar imagen</button></div>   
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>        
+        <div class="row nomarpad mt-5">
+            <div class="col-1"><img src="../images/favourite_icon.png" style="max-width: -webkit-fill-available;" alt=""></div>
+            <div class="col-11" style="font-family:Pacifico;color:#BF4D67;font-size:50px;margin-bottom:25px;text-decoration:underline">Mis recetas</div>
         </div>
-        <div class="row nomarpad" style="justify-content: space-evenly">
+
+        <div class="row nomarpad">
             
             @foreach($myRecipes as $recipe)
-            <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 nomarpad mb-3 mr-1" style="border:5px solid #63A6A6;border-radius:5px;min-height: 200px;background-color:#AEE5D8">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 nomarpad mb-3 mr-1" style="border:5px solid #63A6A6;border-radius:5px;min-height: 200px;background-color:#AEE5D8;margin-right:8%!important">
                 <form method="POST" action="../myrecipe/{{$recipe->id}}">
                     <div class="row nomarpad">
                         @csrf
-                            <a href="{{url('recipe/'.$recipe->recipe_id)}}" style="text-decoration:none;color:#000000">
+                            <a href="{{url('recipe/'.$recipe->recipe_id)}}" style="text-decoration:none;color:#000000;width:100%">
                                 <div class="row nomarpad">                        
                                     <div class="col-12 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto;border-bottom:5px solid #63A6A6"></div>
                                     <div class="col-10 nomarpad" style="padding:10px!important">
@@ -95,7 +121,13 @@
                     </div>
                 </div> 
             @endforeach
-                
+            <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 nomarpad mb-3 mr-1" style="align-self: center; text-align-last: center;border:5px dotted;min-height: 200px;display: flex;align-items: center;place-content: center;margin-right:8%!important">
+                <a href="/index" style="text-decoration:none;">
+                    <div class="row nomarpad" style="justify-content: center;">                        
+                    <div class="col-6 nomarpad"><button type="submit" class="btn navbar-button" style="">+</button></div>
+                    </div>
+                </a>
+            </div>
             </div>
             <div class="col-12">{{$myRecipes->links("pagination::bootstrap-4")}}</div>  
         </div>

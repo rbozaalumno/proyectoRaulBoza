@@ -31,6 +31,7 @@ class UserSeeder  extends Seeder{
             'name' => 'AdminRecetas',
             'email' => 'rakiden97@gmail.com',
             'password' => Hash::make('pestillo'),
+            'image'=>'null',
         ]);
     }
 }

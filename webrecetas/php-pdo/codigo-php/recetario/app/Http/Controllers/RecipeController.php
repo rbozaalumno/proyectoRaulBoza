@@ -69,7 +69,11 @@ class RecipeController extends Controller
         for ($i = 0; $i <= count($usersId)-1; $i++) {
             array_push($usersNames,(DB::table('users')->where('id',$usersId[$i])->get())[0]->{'name'});
         }
-        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0],'names'=>$usersNames]);
+        $usersImages=[];
+        for ($i = 0; $i <= count($usersId)-1; $i++) {
+            array_push($usersImages,(DB::table('users')->where('id',$usersId[$i])->get())[0]->{'image'});
+        }
+        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0],'names'=>$usersNames, 'images'=>$usersImages]);
     }
 
     public function getPanel(Request $request){
@@ -78,11 +82,11 @@ class RecipeController extends Controller
         $user = DB::table('users')->where('id',$userId)->get();
 
         if(request()->has('category_id')){
-            $myRecipes = DB::table('recipe')->where('user_id',$userId)->where('category_id',request('category_id'))->orderBy('id','desc')->paginate(11)->appends('category_id', request('category_id'));
+            $myRecipes = DB::table('recipe')->where('user_id',$userId)->where('category_id',request('category_id'))->orderBy('id','desc')->paginate(5)->appends('category_id', request('category_id'));
         }elseif(request()->has('search')){
-            $myRecipes = DB::table('recipe')->where('title', 'like', '%'.request('search').'%')->orderBy('id','desc')->paginate(12)->appends('title', request('search'));
+            $myRecipes = DB::table('recipe')->where('title', 'like', '%'.request('search').'%')->orderBy('id','desc')->paginate(5)->appends('title', request('search'));
         }else{
-            $myRecipes = DB::table('recipe')->where('user_id',$userId)->orderBy('id','desc')->paginate(11);
+            $myRecipes = DB::table('recipe')->where('user_id',$userId)->orderBy('id','desc')->paginate(5);
         }
         $categoriesSelect = DB::table('category');
         return view('userPanel/panel', ['user' => $user, 'myRecipes'=>$myRecipes, 'categoriesSelect'=>$categoriesSelect->get()]);
@@ -154,7 +158,16 @@ class RecipeController extends Controller
     }
 
     public function updateRecipe(Request $request,$recipe_id){ 
-        DB::table('recipe')->where('id',$recipe_id)->update([
+        if($request->file('image')==null){
+            DB::table('recipe')->where('id',$recipe_id)->update([
+                'user_id' => Auth::id(),
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'ingredients' => $request->input('ingredients'),
+                'category_id' => $request->input('category'),
+                ]);
+        }else{
+            DB::table('recipe')->where('id',$recipe_id)->update([
                 'user_id' => Auth::id(),
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
@@ -162,7 +175,7 @@ class RecipeController extends Controller
                 'category_id' => $request->input('category'),
                 'image' => 'data:image/jpeg;base64,'.base64_encode(file_get_contents($request->file('image')->path())),
                 ]);
-
+        }
         $userId = Auth::id();
         $user = DB::table('users')->where('id',$userId)->get();
         $myRecipes = DB::table('recipe')->where('user_id',$userId)->orderBy('id','desc')->get();
@@ -263,5 +276,17 @@ class RecipeController extends Controller
         }
         $category = DB::table('category')->where('id',$recipe->category_id)->get();
         return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0]]);
+    }
+
+    public function updateUserImage(Request $request,$user_id){ 
+        if($request->file('image')!=null){
+            DB::table('users')->where('id',$user_id)->update([
+                'image' => 'data:image/jpeg;base64,'.base64_encode(file_get_contents($request->file('image')->path())),
+                ]);
+        }        
+        $userId = Auth::id();
+        $user = DB::table('users')->where('id',$userId)->get();
+        $myRecipes = DB::table('recipe')->where('user_id',$userId)->orderBy('id','desc')->get();
+        return redirect('panel');
     }
 }

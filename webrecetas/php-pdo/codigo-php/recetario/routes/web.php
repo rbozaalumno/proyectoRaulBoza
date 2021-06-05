@@ -33,6 +33,7 @@ Route::post('favourite/{id}','App\Http\Controllers\RecipeController@setRecipeFav
 Route::post('unfavourite/{id}','App\Http\Controllers\RecipeController@unsetRecipeFavourite')->middleware('auth');
 Route::get('recipe/{id}','App\Http\Controllers\RecipeController@getRecipe');
 Route::post('comment/{recipe_id}','App\Http\Controllers\RecipeController@insertComment')->middleware('auth');
+Route::post('update_user/{id}','App\Http\Controllers\RecipeController@updateUserImage')->middleware('auth');
 Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout', function () {
     return view('index');
 });

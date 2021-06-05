@@ -16,12 +16,12 @@
         <h1 style="position:absolute;right: 36%;top: 30%;font-family:Pacifico;color:#BF4D67;font-size:100px;">WebRecetas</h1>
         <img class="img-fluid" src="../images/backhome.png" alt="" style="width:100%;height: 250px;object-fit: cover;object-position: 0px -410px;"></img>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-light" style=" background-color:#AEE5D8;padding: .5rem 6rem .5rem 12rem;">
+    <nav class="navbar navbar-expand-lg navbar-light" style=" background-color:#AEE5D8;padding: .5rem 6rem .5rem 12rem;border: 4px solid #63A6A6">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav" style="margin-left:50px">
                 <li class="nav-item active">
                     <a class="nav-link navbar-element" href="/home">Indice<span class="sr-only">(current)</span></a>
                 </li>
@@ -31,7 +31,7 @@
                     <a class="nav-link navbar-element" href="/index">Recetas<span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto"style="margin-right: 88px;">
+            <ul class="navbar-nav ml-auto"style="margin-right: 145px;">
                 
                 <li class="nav-item dropdown" >
                     @if (Auth::guest())
@@ -58,8 +58,8 @@
     </nav>
     <div class="content" style="font-family: Lato;">
         <div class="row nomarpad">                        
-            <div class="col-3 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto;border:5px solid #63A6A6; border-radius:5px;"></div>
-            <div class="col-9">
+            <div class="col-4 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto;border:5px solid #63A6A6; border-radius:5px;"></div>
+            <div class="col-8">
                 <div class="row nomarpad">
                     <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:75px;margin-bottom:25px;text-decoration:underline">{{$recipe->title}}</div>
                     @if($isFavourite)
@@ -77,8 +77,8 @@
                     <div class="col-12 nomarpad recipe_subtitle"><p>Ingredientes</p></div>
                     <div class="col-12 nomarpad recipe_ingredients"><p>{{$recipe->ingredients}}</p></div>
             </div>
-            <div class="col-12" style="background: #AEE5D8;  margin-top:25px!important;border-radius:5px;border-color: #63A6A6;border-style: solid;">
-                <div class="col-12 nomarpad recipe_subtitle"><p>Descripcion</p></div>
+            <div class="col-12" style="margin-top:30px!important">
+                <div class="col-12 nomarpad recipe_subtitle"><p>Receta</p></div>
                 <div class="col-12 nomarpad" style="margin-top:40px!important;margin-bottom:50px!important">{!!$recipe->description!!}</div>
             </div>
             <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:50px;margin-bottom:25px;;margin-top:25px;">Comentarios - {{count($comments)}}</div>
@@ -88,7 +88,7 @@
                 <div class="row nomarpad">
                     <form method="POST" action="../comment/{{$recipe->id}}">
                     @csrf
-                        <textarea class="form-control" name="comment" id="comment" cols="100" rows="5" style="margin:10px; width:auto!important" required></textarea>
+                        <textarea class="form-control category-select" name="comment" id="comment" cols="75" rows="3" style="margin:0px; width:auto!important" required></textarea>
                         
                         <button type="submit" class="btn navbar-button" style="float:right;margin: 10px;">Enviar</button>
                     </form>
@@ -103,14 +103,16 @@
                         $i=0;
                     @endphp
                     @foreach($comments as $comment)
-                    <div class="col-6 nomarpad">
+                    <div class="col-1 nomarpad" style="align-self:center"><img src="{{$images[$i]}}" alt="" style="width:100%;">
+                    </div>
+                    <div class="col-5 nomarpad">
                         <div class="row nomarpad">
                             <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:25px;margin-bottom:10px;;margin-top:25px">{{$names[$i]}}</div>
                         @if(Auth::id()==1)
-                            <div class="col-9"><p style="margin: 10px;padding: 10px;background: #e4d4d4;border-radius: 10px;">{{$comment->text}}</p></div>
-                            <div class="col-3"><form method="POST" action="../deleteComment/{{$comment->id}}/{{$recipe->id}}" enctype="multipart/form-data">@csrf<button type="submit" class="btn btn-danger" style="float:right;margin: 10px;">Eliminar Comentario</button></form></div>
+                            <div class="col-9"><p style="margin-top: 10px;padding: 10px;background: #e4d4d4;border-radius: 10px;">{{$comment->text}}</p></div>
+                            <div class="col-3"><form method="POST" action="../deleteComment/{{$comment->id}}/{{$recipe->id}}" enctype="multipart/form-data">@csrf<button type="submit" class="btn navbar-button" style="float:right;margin: 10px;">Eliminar</button></form></div>
                         @else
-                            <div class="col-12 nomarpad"><p style="margin: 10px;padding: 10px;background: #e4d4d4;border-radius: 10px;">{{$comment->text}}</p></div>
+                            <div class="col-12 nomarpad"><p style="margin-top: 10px;padding: 10px;background: #e4d4d4;border-radius: 10px;">{{$comment->text}}</p></div>
                         @endif
                         </div>
                     </div>    

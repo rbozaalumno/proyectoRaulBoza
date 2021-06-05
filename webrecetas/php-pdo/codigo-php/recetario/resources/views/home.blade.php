@@ -33,8 +33,8 @@
             <div class="col-6 nomarpad" style="background-color:#AEE5D8;text-align: center;">
                 <h1 style="font-family:Pacifico;color:black;font-size:75px;padding-top: 50px">Únete</h1>
                 <p style="font-family:Lato;color:black;font-size:25px;padding-top: 45px">¡Aporta tu grano de arroz a la olla!<br>Pertenece a esta comunidad de chefs para comentar,<br>compartir tus recetas y poder guardar tus favoritas.</p>
-                <p style="font-family:Lato;color:black;font-size:25px;padding-top: 25px"><a href="/login" class="newa">¡Ponte creativo con nosotros!</a></p>
-                <div class="row nomarpad"><a href="/login" style="width: -webkit-fill-available;"><div class="col-2 offset-5 saltbaegif"></div></a></div>
+                <p style="font-family:Lato;color:black;font-size:25px;padding-top: 25px"><a href="/register" class="newa">¡Ponte creativo con nosotros!</a></p>
+                <div class="row nomarpad"><a href="/register" style="width: -webkit-fill-available;"><div class="col-2 offset-5 saltbaegif"></div></a></div>
             </div>
             <div class="col-6 nomarpad">
                 <img src="../images/cooking2.png" alt="" style="width: 100%;height: 500px;object-fit: cover;object-position: 0px -55px;background-color: #AEE5D8;">
@@ -43,23 +43,24 @@
     </div>
     <div class="content">
         <div class="row nomarpad">
-        <div style="display:none">{{$i = 0}}</div>
+            <div class="row nomarpad" style="justify-content: space-evenly">
             @foreach($recipes as $recipe)
-                <div class="col-12 col-sm-12 col-md-6 col-lg-4  col-xl-4 nomarpad mb-3">
-                    <a href="{{url('recipe/'.$recipe->id)}}" style="text-decoration:none;color:#404b56">
-                        <div class="row nomarpad">                        
-                            <div class="col-6 nomarpad"><img src="{{$recipe->image}}" alt="" class="recipe_image"></div>
-                            <div class="col-6 nomarpad" style="padding:10px!important">
-                                <p class="recipe_title">{{$recipe->title}}</p>
-                                <p class="recipe_category">{{$categories[$i][0]->name}}</p>
-                                <p class="recipe_ingredients" >{{$recipe->ingredients}}</p>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 nomarpad mb-3 mr-1" style="border:5px solid #63A6A6;border-radius:5px;min-height: 200px;background-color:#AEE5D8">
+                    <div class="row nomarpad">
+                        <a href="{{url('recipe/'.$recipe->id)}}" style="text-decoration:none;color:#000000">
+                            <div class="row nomarpad">                        
+                                <div class="col-12 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto; max-height:300px;border-bottom:5px solid #63A6A6"></div>
+                                <div class="col-10 nomarpad" style="padding:10px!important">
+                                    <p style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
+                                        max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;; font-family:Lato">{{$recipe->title}}</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
-                <div style="display:none">{{$i++}}</div>
             @endforeach
-            <div class="col-12">{{$recipes->links("pagination::bootstrap-4")}}</div>
+            </div>
+            <div class="col-12 mt-5">{{$recipes->links("pagination::bootstrap-4")}}</div>
         </div>  
     </div>
 </body>

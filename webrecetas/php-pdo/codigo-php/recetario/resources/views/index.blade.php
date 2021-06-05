@@ -16,12 +16,12 @@
         <h1 style="position:absolute;right: 36%;top: 30%;font-family:Pacifico;color:#BF4D67;font-size:100px;">WebRecetas</h1>
         <img class="img-fluid" src="../images/backhome.png" alt="" style="width:100%;height: 250px;object-fit: cover;object-position: 0px -410px;"></img>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-light" style=" background-color:#AEE5D8;padding: .5rem 6rem .5rem 12rem;">
+    <nav class="navbar navbar-expand-lg navbar-light" style=" background-color:#AEE5D8;padding: .5rem 6rem .5rem 12rem;border: 4px solid #63A6A6">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav" style="margin-left:50px">
                 <li class="nav-item active">
                     <a class="nav-link navbar-element" href="/home">Indice<span class="sr-only">(current)</span></a>
                 </li>
@@ -31,7 +31,7 @@
                     <a class="nav-link navbar-element" href="/index">Recetas<span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto"style="margin-right: 88px;">
+            <ul class="navbar-nav ml-auto"style="margin-right: 270px;">
                 <select class="form-control navbar-focus category-select" id="category" name="category"style="min-width:200px;margin-right: 60px;border: 2px solid #63A6A6;" onchange="location = this.value;">
                     <option class="category-selected" value="">Seleciona categoria</option>
                     @foreach($categoriesSelect as $category)
@@ -67,11 +67,11 @@
     </nav>
     <div class="content">
         <div class="row nomarpad">
-            <div class="row nomarpad" style="justify-content: space-evenly">
+            <div class="row nomarpad">
             @foreach($recipes as $recipe)
-                <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 nomarpad mb-3 mr-1" style="border:5px solid #63A6A6;border-radius:5px;min-height: 200px;background-color:#AEE5D8">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 nomarpad mb-3 mr-1" style="border:5px solid #63A6A6;border-radius:5px;min-height: 200px;background-color:#AEE5D8;margin-right:8%!important">
                     <div class="row nomarpad">
-                        <a href="{{url('recipe/'.$recipe->id)}}" style="text-decoration:none;color:#000000">
+                        <a href="{{url('recipe/'.$recipe->id)}}" style="text-decoration:none;color:#000000;width:100%">
                             <div class="row nomarpad">                        
                                 <div class="col-12 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto; max-height:300px;border-bottom:5px solid #63A6A6"></div>
                                 <div class="col-10 nomarpad" style="padding:10px!important">

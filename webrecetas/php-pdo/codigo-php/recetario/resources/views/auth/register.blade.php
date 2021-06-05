@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center mt-5">
+    <div class="row justify-content-center mt-5"  style="margin-top:8rem!important">
         <div class="col-md-6 nomarpad">
             <div class="card" style="height:100%;position:none;border: 5px solid #BF4D67; border-right:0px;border-radius: 5px 0px 0px 5px;">
                 <div class="card-body nomarpad" style="background: no-repeat;text-align:center;background-image: url(../images/cutlery.jpg);background-size: 100%;background-origin: content-box;background-position: center;">
@@ -78,5 +78,11 @@
             </div>
         </div>
     </div>
-</div>
+</div>      
+<footer>
+    <div class="col-12 nomarpad" style="height:150px; background-color:#63A6A6;padding-top: 0px!important;margin-top:202px !important">
+        <h1 style="position:absolute;right: 31%;top: 40%;font-family:Lato;color:#BF4D67;font-size:40px;">Copyright© 2021 WebRecetas</h1>
+        <img class="img-fluid" src="../images/backhome.png" alt="" style="width:100%;height: 165px;object-fit: cover;object-position: 0px -1000px;"></img>
+    </div>
+</footer>
 @endsection

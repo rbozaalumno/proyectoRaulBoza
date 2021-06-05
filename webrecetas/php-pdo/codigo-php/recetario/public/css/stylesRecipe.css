@@ -184,7 +184,8 @@
     background-color: #AEE5D8 !important;
 }
 .py-4 {
-    min-height: 1000px!important;
+    min-height: 884px!important;
+    padding-bottom: 0px!important;
 }
 .nav-link{
     font-family: Lato;

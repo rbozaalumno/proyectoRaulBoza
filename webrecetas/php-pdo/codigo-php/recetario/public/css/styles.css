@@ -164,7 +164,8 @@
     background-color: #AEE5D8 !important;
 }
 .py-4 {
-    min-height: 1000px!important;
+    min-height: 884px!important;
+    padding-bottom: 0px!important;
 }
 .nav-link{
     font-family: Lato;
@@ -270,5 +271,32 @@
     border-color: #BF4D67 !important;
 }
 .icon-button:focus{
+    box-shadow: 0 0 0 0.2rem rgba(191, 77, 103,0.5)!important;
+}
+.icon-button2{
+    width: 40px;
+    height: 40px;
+    background: no-repeat;
+    text-align:center;
+    background-image: url(../images/delete_icon.png);
+    background-size: 150%;
+    background-origin: content-box;
+    background-position: center;
+    font-family: Lato;
+    color: #BF4D67 !important;
+    border-color: #BF4D67 !important;
+}
+.icon-button2:active{
+    color: #fff !important;
+    background-color: #BF4D67 !important;
+    border-color: #BF4D67 !important;
+}
+.icon-button2:hover{
+    background-image: url(../images/delete_icon.png);
+    color: #fff !important;
+    background-color: #BF4D67 !important;
+    border-color: #BF4D67 !important;
+}
+.icon-button2:focus{
     box-shadow: 0 0 0 0.2rem rgba(191, 77, 103,0.5)!important;
 }
