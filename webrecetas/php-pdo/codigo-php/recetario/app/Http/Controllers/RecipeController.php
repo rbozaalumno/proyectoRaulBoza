@@ -28,7 +28,6 @@ class RecipeController extends Controller
     }
 
     public function getIndex(Request $request){
-        
         if(request()->has('category_id')){
             $recipes = Recipe::where('category_id',request('category_id'))->orderBy('id','desc')->paginate(9)->appends('category_id', request('category_id'));
         }elseif(request()->has('search')){
@@ -257,7 +256,19 @@ class RecipeController extends Controller
             $isFavourite=false;
         }
         $category = DB::table('category')->where('id',$recipe->category_id)->get();
-        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0]]);
+        $usersId=[];
+        foreach($comments as $comment){
+            array_push($usersId,$comment->{"user_id"});
+        }
+        $usersNames=[];
+        for ($i = 0; $i <= count($usersId)-1; $i++) {
+            array_push($usersNames,(DB::table('users')->where('id',$usersId[$i])->get())[0]->{'name'});
+        }
+        $usersImages=[];
+        for ($i = 0; $i <= count($usersId)-1; $i++) {
+            array_push($usersImages,(DB::table('users')->where('id',$usersId[$i])->get())[0]->{'image'});
+        }
+        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0],'names'=>$usersNames, 'images'=>$usersImages]);
     }
 
     public function unsetRecipeFavourite($recipe_id){ 
@@ -275,7 +286,19 @@ class RecipeController extends Controller
             $isFavourite=false;
         }
         $category = DB::table('category')->where('id',$recipe->category_id)->get();
-        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0]]);
+        $usersId=[];
+        foreach($comments as $comment){
+            array_push($usersId,$comment->{"user_id"});
+        }
+        $usersNames=[];
+        for ($i = 0; $i <= count($usersId)-1; $i++) {
+            array_push($usersNames,(DB::table('users')->where('id',$usersId[$i])->get())[0]->{'name'});
+        }
+        $usersImages=[];
+        for ($i = 0; $i <= count($usersId)-1; $i++) {
+            array_push($usersImages,(DB::table('users')->where('id',$usersId[$i])->get())[0]->{'image'});
+        }
+        return view('recipes/recipe', ['recipe'=> $recipe, 'comments'=>$comments, 'isFavourite'=>$isFavourite, 'category'=>$category[0],'names'=>$usersNames, 'images'=>$usersImages]);
     }
 
     public function updateUserImage(Request $request,$user_id){ 

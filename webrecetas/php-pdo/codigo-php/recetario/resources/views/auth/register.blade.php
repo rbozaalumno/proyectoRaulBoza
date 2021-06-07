@@ -81,7 +81,7 @@
 </div>      
 <footer>
     <div class="col-12 nomarpad" style="height:150px; background-color:#63A6A6;padding-top: 0px!important;margin-top:202px !important">
-        <h1 style="position:absolute;right: 31%;top: 40%;font-family:Lato;color:#BF4D67;font-size:40px;">Copyright© 2021 WebRecetas</h1>
+        <h1 style="position:absolute;right: 36%;top: 40%;font-family:Lato;color:#BF4D67;font-size:40px;">Copyright© 2021 WebRecetas</h1>
         <img class="img-fluid" src="../images/backhome.png" alt="" style="width:100%;height: 165px;object-fit: cover;object-position: 0px -1000px;"></img>
     </div>
 </footer>

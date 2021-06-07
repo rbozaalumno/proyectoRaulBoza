@@ -73,8 +73,8 @@
                 </div>
                 <form method="POST" action="../update_user/{{$user[0]->id}}" enctype="multipart/form-data">@csrf
                 <div class="row nomarpad ml-4 mt-5">
-                    <div id="bkimage" class="col-2 " style="background: no-repeat;border:5px dotted;text-align:center;background-image: url(../images/add_image.png);background-size: 100%;background-origin: content-box;background-position: center;">
-                        <input id="image" type="file" class="custom-file-input" style="max-height:100px" id="inputGroupFile01" name="image">
+                    <div id="bkimage" class="col-2 " style="background: no-repeat;border:5px dotted;text-align:center;background-image: url(../images/add_image.png);background-size: 60%;background-origin: content-box;background-position: center;">
+                        <input id="image" type="file" class="custom-file-input" id="inputGroupFile01" name="image">
                     </div>
                     <script>
                         if('{{$user[0]->image}}' != 'null'){
@@ -202,4 +202,12 @@
 <!-- jQuery and JS bundle w/ Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+<script>
+    image.onchange = evt => {
+    const [file] = image.files
+    if (file) {
+        document.getElementById("bkimage").style.backgroundImage = "url('"+URL.createObjectURL(file)+"')" ;
+    }
+  }
+</script>
 </html>

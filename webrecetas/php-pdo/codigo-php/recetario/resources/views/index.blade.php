@@ -67,22 +67,24 @@
     </nav>
     <div class="content">
         <div class="row nomarpad">
-            <div class="row nomarpad">
-            @foreach($recipes as $recipe)
-                <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 nomarpad mb-3 mr-1" style="border:5px solid #63A6A6;border-radius:5px;min-height: 200px;background-color:#AEE5D8;margin-right:8%!important">
-                    <div class="row nomarpad">
-                        <a href="{{url('recipe/'.$recipe->id)}}" style="text-decoration:none;color:#000000;width:100%">
-                            <div class="row nomarpad">                        
-                                <div class="col-12 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto; max-height:300px;border-bottom:5px solid #63A6A6"></div>
-                                <div class="col-10 nomarpad" style="padding:10px!important">
-                                    <p style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
-                                        max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;; font-family:Lato">{{$recipe->title}}</p>
+            <div class="col-12 nomarpad">
+                <div class="row nomarpad">
+                    @foreach($recipes as $recipe)
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 nomarpad mb-3 mr-1" style="border:5px solid #63A6A6;border-radius:5px;min-height: 200px;background-color:#AEE5D8;margin-right:8%!important">
+                        <div class="row nomarpad">
+                            <a href="{{url('recipe/'.$recipe->id)}}" style="text-decoration:none;color:#000000;width:100%">
+                                <div class="row nomarpad">                        
+                                    <div class="col-12 nomarpad"><img src="{{$recipe->image}}" alt="" style="width:100%; height:auto; max-height:300px;border-bottom:5px solid #63A6A6"></div>
+                                    <div class="col-10 nomarpad" style="padding:10px!important">
+                                        <p style="text-decoration:none;text-decoration:underline; font-weight:bold;word-break: break-word;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 16px; /* fallback */
+                                            max-height: 32px; /* fallback */-webkit-line-clamp: 2; /* number of lines to show */-webkit-box-orient: vertical;; font-family:Lato">{{$recipe->title}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                </div> 
-            @endforeach
+                            </a>
+                        </div>
+                    </div> 
+                    @endforeach
+                </div>
             </div>
             <div class="col-12">{{$recipes->links("pagination::bootstrap-4")}}</div>  
         </div>

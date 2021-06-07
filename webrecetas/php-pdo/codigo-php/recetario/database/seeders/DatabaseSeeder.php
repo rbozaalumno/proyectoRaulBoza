@@ -31,7 +31,16 @@ class UserSeeder  extends Seeder{
             'name' => 'AdminRecetas',
             'email' => 'rakiden97@gmail.com',
             'password' => Hash::make('pestillo'),
-            'image'=>'null',
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Pepelolo',
+            'email' => 'pepito@gmail.com',
+            'password' => Hash::make('pestillo'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Chicote',
+            'email' => 'trukutrukur@gmail.com',
+            'password' => Hash::make('pestillo'),
         ]);
     }
 }
@@ -40,7 +49,17 @@ class CommentSeeder  extends Seeder{
     public function run(){
         DB::table('comment')->insert([
             'user_id' => 1,
-            'recipe_id' => 1,
+            'recipe_id' => 10,
+            'text' => 'Comentario prueba',
+        ]);
+        DB::table('comment')->insert([
+            'user_id' => 2,
+            'recipe_id' => 10,
+            'text' => 'Comentario prueba',
+        ]);
+        DB::table('comment')->insert([
+            'user_id' => 3,
+            'recipe_id' => 10,
             'text' => 'Comentario prueba',
         ]);
     }

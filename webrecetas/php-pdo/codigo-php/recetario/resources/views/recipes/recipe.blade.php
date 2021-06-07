@@ -69,7 +69,7 @@
                     @endif
                     <div class="col-1"><a href="https://api.whatsapp.com/send?text={{Request::url()}}"><img src="../images/waicon.png" class="waicon" style="width:100%"/></a></div>
                     @if(Auth::id()==1)
-                    <div class="col-12"><form method="POST" action="../delete/{{$recipe->id}}" enctype="multipart/form-data">@csrf<button type="submit" class="btn btn-danger" style="margin: 10px;">Eliminar Post</button></form></div>
+                    <div class="col-12"><form method="POST" action="../delete/{{$recipe->id}}" enctype="multipart/form-data">@csrf<button type="submit" class="btn navbar-button" style="margin: 10px;">Eliminar Receta</button></form></div>
                     @endif
                 </div>
             </div>
@@ -77,25 +77,25 @@
                     <div class="col-12 nomarpad recipe_subtitle"><p>Ingredientes</p></div>
                     <div class="col-12 nomarpad recipe_ingredients"><p>{{$recipe->ingredients}}</p></div>
             </div>
-            <div class="col-12" style="margin-top:30px!important">
+            <div class="col-12 nomarpad" style="margin-top:30px!important">
                 <div class="col-12 nomarpad recipe_subtitle"><p>Receta</p></div>
                 <div class="col-12 nomarpad" style="margin-top:40px!important;margin-bottom:50px!important">{!!$recipe->description!!}</div>
             </div>
-            <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:50px;margin-bottom:25px;;margin-top:25px;">Comentarios - {{count($comments)}}</div>
+            <div class="col-12 nomarpad" style="font-family:Pacifico;color:#BF4D67;font-size:50px;margin-bottom:25px;;margin-top:25px;">Comentarios - {{count($comments)}}</div>
             @if(!Auth::guest())
-            <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:30px;margin-bottom:10px;;margin-top:25px;text-decoration:underline">Deja tu comentario</div>
-            <div class="col-12">
+            <div class="col-12 nomarpad mt-5" style="font-family:Pacifico;color:#BF4D67;font-size:30px;margin-bottom:10px;;margin-top:25px;text-decoration:underline">Deja tu comentario</div>
+            <div class="col-12 nomarpad mt-4">
                 <div class="row nomarpad">
                     <form method="POST" action="../comment/{{$recipe->id}}">
                     @csrf
                         <textarea class="form-control category-select" name="comment" id="comment" cols="75" rows="3" style="margin:0px; width:auto!important" required></textarea>
                         
-                        <button type="submit" class="btn navbar-button" style="float:right;margin: 10px;">Enviar</button>
+                        <button type="submit" class="btn navbar-button" style="float:right;margin: 10px; margin:20px 0px 0px 0px!important">Enviar</button>
                     </form>
                 </div>
             </div>
             @else
-            <div class="col-12" style="font-family:Pacifico;color:#BF4D67;font-size:30px;margin-bottom:10px;;margin-top:25px"><a href="/login" class="newa" style="color:#BF4D67">¡Únete para dejar tus comentarios!</a></div>
+            <div class="col-12 nomarpad" style="font-family:Pacifico;color:#BF4D67;font-size:30px;margin-bottom:10px;;margin-top:25px"><a href="/login" class="newa" style="color:#BF4D67">¡Únete para dejar tus comentarios!</a></div>
             @endif
             <div class="col-12 nomarpad">
                 <div class="row nomarpad">
@@ -103,7 +103,8 @@
                         $i=0;
                     @endphp
                     @foreach($comments as $comment)
-                    <div class="col-1 nomarpad" style="align-self:center"><img src="{{$images[$i]}}" alt="" style="width:100%;">
+                    <div class="col-1 nomarpad" style="align-self:center;background: no-repeat;text-align:center;background-size: 75%;background-origin: content-box;background-position: center;min-height:100px">
+                        <img src="{{$images[$i]}}" alt="" style="width:100%;">
                     </div>
                     <div class="col-5 nomarpad">
                         <div class="row nomarpad">
@@ -112,7 +113,7 @@
                             <div class="col-9"><p style="margin-top: 10px;padding: 10px;background: #e4d4d4;border-radius: 10px;">{{$comment->text}}</p></div>
                             <div class="col-3"><form method="POST" action="../deleteComment/{{$comment->id}}/{{$recipe->id}}" enctype="multipart/form-data">@csrf<button type="submit" class="btn navbar-button" style="float:right;margin: 10px;">Eliminar</button></form></div>
                         @else
-                            <div class="col-12 nomarpad"><p style="margin-top: 10px;padding: 10px;background: #e4d4d4;border-radius: 10px;">{{$comment->text}}</p></div>
+                            <div class="col-12 nomarpad" style="padding-left:15px!important;padding-right:15px!important"><p style="margin-top: 10px;padding: 10px;background: #e4d4d4;border-radius: 10px;">{{$comment->text}}</p></div>
                         @endif
                         </div>
                     </div>    
